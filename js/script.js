@@ -14,8 +14,26 @@ function showData(dataArray) {
   // El for itera sobre los elementos del array
   for (const item of dataArray) {
     // En la siguiente línea se utilizan "backticks" para armar el String. Más info => https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Template_literals
-    container.innerHTML += `<p> ${item.name} ${item.lastname} </p>`; // Se concatena cada párrafo de la manera que queremos mostrarlo al innerHTML del contenedor
+    container.innerHTML += `<p> ${item.name} ${item.lastname}, ${item.age} años</p>`; // Se concatena cada párrafo de la manera que queremos mostrarlo al innerHTML del contenedor
   }
 }
 
+function classInfo(data) {
+  container.innerHTML += `<h3> Los estudiantes pertenecen al curso de ${data.course}, con el id
+                          #${data.id} y bajo la supervisión de ${data.teacherName}.</h3>`;
+} //quise agregar esto para veo cómos sería agregar el resto de la info
+
 // Escribe el código necesario para realizar el fetch al archivo con los datos y mostrar los estudiantes con la función showData
+fetch(DATA_URL)
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Error en la petición'); //si la respuesta no esta ok tira el error
+          }
+          return response.json(); // si todo esta ok responde con el json
+      })
+      .then(data => { //llamamos a la data
+        const estudiantes = data.students; //definimos la constante de la data
+        showData(estudiantes); // y llamamos a la funcion la constante que definimos
+        classInfo(data);
+      });
+
